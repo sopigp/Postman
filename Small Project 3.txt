@@ -1,0 +1,134 @@
+Goal
+- Manual Test Case
+- Automation API w/ katalon
+- Report Katalon
+- Organisir file di Git
+
+http://34.123.127.154
+
+Test Case :
+1) Admin (3)
+2) Attendance (2)
+3) Employee (10 endpoint) bebas asal ada
+GET POST UPDATE DELETE
+4) Report ?
+5) Upload Github ?
+6) Negative ?
+**) Nampung global variable?done
+
+Login :
+User : Admin
+Pass :s#Kol4HQA!*
+
+Token:
+https://{your-host}/index.php/oauth/issueToken
+
+? query param
+: path param
+
+newman run SekolahQA.postman_collection.json -e OrangeHRM-Original.postman_environment.json -r htmlextra
+
+{{url}}/api/v1/employee/search?name={{fullName_employee}}&code={{code}}
+
+CATATAN YANG BELUM BISA:
+---ADD EMPLOYEE--
+1) Update employee detail -> employee detail (data blm ke update) --> ok
+Employee search paramnya bagusin lagi
+2) Update Employee Contact Detail -> employee detail (data blm ke update)-->ok
+3) Employee Picture kayanya (mesti upload dulu di webnya)-->ok
+
+---EMPOYEE DEPENDETS---
+Update employee dependets -> Update Employee Dependents (sequence number dianggap salah pdhl bener)-->ok
+Delete Employee Dependents (sequence number dianggap salah pdhl bener)-->ok
+
+---EMPLOYEE CUSTOM FIELD---
+Updated Employee Custom Field -> Custom Field Not Found pdhl save employee custom berhasil-->ok
+Delete Employee Custom Field -> Custom Field Not Found pdhl save employee custom berhasil-->ok
+
+--EMPLOYEE EDUCATION--
+Update Employee Education-> Record Not Found-->ok
+Delete Employee Education-> Record Not Found-->ok
+
+--EMPOYEE EXPERIENCE--
+Update Employee Experience-> Record Not Found-->ok
+Delete Employee Experience-> Record Not Found-->ok
+
+--SUPERVISOR--
+Update Supervisor Details->Invalid Parameter-->ok
+Delete Supervisor Details->Invalid Parameter-->ok
+
+EMPLOYEE JOB MASIH GABISA (BESOK TANYA INI)
+
+kenziswara@gmail.com
+dirgantara.kenzi@gmail.com
+
+Bearer {{token}}
+{{newEmployeeId}}
+
+Picture mesti nambah sendiri
+value hobby (custom field) mesti nambah sendiri
+
+CARA BIKIN CUSTOM FIELD :
+PIM -> Custom Fields
+1) bikin dulu custom field di web
+2) catat no fieldId nya (ubah di ENV setiap fieldIdnya ganti)
+3) hit value dari custom field di postman
+** Cek di bagian personal info user udh muncul apa blm (tergantung milih add custom fieldnya di bagian mana)
+
+CARA BIKIN EDUCATION:
+Admin -> Qualification -> Education -> Add level
+**Cek di bagian qualification user udh muncul apa blm
+
+
+----INITIALIZATION---
+1) Register OAuth Client (OK)
+
+---ADMIN----
+1) Get Users (GET)-->Bikin Verify (OK)--> MESTI CEK INI TERUS KARNA KEMUNGKINAN GANTI
+2) User Login (POST)-->Bikin Verify (OK)
+3) Get Organization Information (GET)-->Bikin Verify-->(OK)--> MESTI CEK INI TERUS KARNA KEMUNGKINAN GANTI
+
+---ATTENDANCE---
+1) Punch In (POST)-->Bikin Verify (OK)
+2) Punch Out (POST)-->Bikin Verify (OK)
+
+---ADD EMPLOYEE--
+1) Save Employee (POST) (OK)
+3) Employee Detail (GET)-->Bikin Verify (OK)
+2) Save Employee Contact Detail (POST)-->Bikin Verify (OK)
+5) Employee Contact Detail (GET)-->Bikin Verify (OK)
+5) Update Employee Detail-->Bikin Verify (OK)
+5) Get Update Employee Detail-->Bikin Verify (OK)
+2) Update Employee Contact Detail (OK)
+2) Update Employee Contact Detail (OK)
+4) Employee Search (GET)-->Bikin Verify --> INI KAYANYA ILANGIN AJA DEH
+6) Employee Picture (GET)-->Bikin Verify
+
+--EMPLOYEE DEPENDETS--
+1) Save Employee Dependent (POST)-->Bikin Verify
+2) Empoyee Dependets (GET)-->Bikin Verify
+
+---EMPLOYEE CUSTOM FIELD---
+1) Save Employee Custom Field (POST)-->Bikin Verify
+2) Employee Custom Field (GET)-->Bikin Verify
+3) Custom Field (GET)-->Bikin Verify
+
+--EMPLOYEE EDUCATION--
+1) Save Employee Education (POST)-->Bikin Verify
+2) Employee Education (GET)-->Bikin Verify
+
+--EMPOYEE EXPERIENCE--
+1) Save Employee Work Experience (POST)-->Bikin Verify
+2) Employee Work Experience (GET)-->Bikin Verify
+
+--SUPERVISOR--
+1) Save supervisor Details (POST)-->Bikin Verify
+2) Supervisor Details (GET)-->Bikin Verify
+
+Laid-off
+Resigned
+
+url-employeeid
+fieldid
+level education
+supervisorId

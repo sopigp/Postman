@@ -1,0 +1,3100 @@
+{
+	"info": {
+		"_postman_id": "7ad87ee8-b549-438e-bd1e-c753cbf11e28",
+		"name": "SekolahQA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Initialization",
+			"item": [
+				{
+					"name": "1.Register OAuth Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Access Token\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.token_type).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.token_type).to.eql(\"Bearer\");\r",
+									"    pm.environment.set(\"token\", jsonData.access_token);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Scope\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.scope).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.scope).to.eql(\"admin\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Token\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.access_token).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.access_token).to.have.lengthOf(40);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Express In\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.expires_in).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData.expires_in).to.be.above(3000);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "sofiegp",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "bintangyy1920",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/oauth/issueToken",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"oauth",
+								"issueToken"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "2.Get Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Verify Result Users\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data[0].userName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].userName).to.eql(\"Admin\");\r",
+									"    pm.expect(jsonData.data[0].userRole).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].userRole).to.eql(\"Admin\");\r",
+									"    pm.expect(jsonData.data[0].status).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].status).to.eql(\"Enabled\");\r",
+									"    pm.expect(jsonData.data[0].employeeName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].employeeName).to.eql(\"admin admin\");\r",
+									"    // pm.expect(jsonData.data[0].employeeId).to.be.a(\"string\");\r",
+									"    // pm.expect(jsonData.data[0].employeeId).to.eql(\"1\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[1].userName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[1].userName).to.eql(\"Arisah\");\r",
+									"    pm.expect(jsonData.data[1].userRole).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[1].userRole).to.eql(\"Admin\");\r",
+									"    pm.expect(jsonData.data[1].status).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[1].status).to.eql(\"Enabled\");\r",
+									"    pm.expect(jsonData.data[1].employeeName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[1].employeeName).to.eql(\"Arisa Hazriaty\");\r",
+									"    // pm.expect(jsonData.data[1].employeeId).to.be.a(\"string\");\r",
+									"    // pm.expect(jsonData.data[1].employeeId).to.eql(\"6\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[2].userName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[2].userName).to.eql(\"Fauzan\");\r",
+									"    pm.expect(jsonData.data[2].userRole).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[2].userRole).to.eql(\"Admin\");\r",
+									"    pm.expect(jsonData.data[2].status).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[2].status).to.eql(\"Enabled\");\r",
+									"    pm.expect(jsonData.data[2].employeeName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[2].employeeName).to.eql(\"Rizqi Ahmad Fauzan\");\r",
+									"    // pm.expect(jsonData.data[2].employeeId).to.be.a(\"string\");\r",
+									"    // pm.expect(jsonData.data[2].employeeId).to.eql(\"3\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[3].userName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[3].userName).to.eql(\"nafih\");\r",
+									"    pm.expect(jsonData.data[3].userRole).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[3].userRole).to.eql(\"Admin\");\r",
+									"    pm.expect(jsonData.data[3].status).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[3].status).to.eql(\"Enabled\");\r",
+									"    pm.expect(jsonData.data[3].employeeName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[3].employeeName).to.eql(\"Nafi Hermawan\");\r",
+									"    // pm.expect(jsonData.data[3].employeeId).to.be.a(\"string\");\r",
+									"    // pm.expect(jsonData.data[3].employeeId).to.eql(\"7\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[4].userName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[4].userName).to.eql(\"nafinafi\");\r",
+									"    pm.expect(jsonData.data[4].userRole).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[4].userRole).to.eql(\"Admin\");\r",
+									"    pm.expect(jsonData.data[4].status).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[4].status).to.eql(\"Enabled\");\r",
+									"    pm.expect(jsonData.data[4].employeeName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[4].employeeName).to.eql(\"Nafi Hermawann\");\r",
+									"    // pm.expect(jsonData.data[4].employeeId).to.be.a(\"string\");\r",
+									"    // pm.expect(jsonData.data[4].employeeId).to.eql(\"74\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[5].userName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[5].userName).to.eql(\"nandariidengen\");\r",
+									"    pm.expect(jsonData.data[5].userRole).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[5].userRole).to.eql(\"Admin\");\r",
+									"    pm.expect(jsonData.data[5].status).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[5].status).to.eql(\"Enabled\");\r",
+									"    pm.expect(jsonData.data[5].employeeName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[5].employeeName).to.eql(\"Christin Nandari Dengen\");\r",
+									"    // pm.expect(jsonData.data[5].employeeId).to.be.a(\"string\");\r",
+									"    // pm.expect(jsonData.data[5].employeeId).to.eql(\"103\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[6].userName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[6].userName).to.eql(\"sopigp\");\r",
+									"    pm.expect(jsonData.data[6].userRole).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[6].userRole).to.eql(\"Admin\");\r",
+									"    pm.expect(jsonData.data[6].status).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[6].status).to.eql(\"Enabled\");\r",
+									"    pm.expect(jsonData.data[6].employeeName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[6].employeeName).to.eql(\"Sofie Gita Pratiwi\");\r",
+									"    // pm.expect(jsonData.data[6].employeeId).to.be.a(\"string\");\r",
+									"    // pm.expect(jsonData.data[6].employeeId).to.eql(\"4\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify total data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var datas = jsonData.data;\r",
+									"    pm.expect( datas.length).to.be.above(4);\r",
+									"   \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.User Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"employeeId\", jsonData.user.employeeId);\r",
+									"\r",
+									"pm.test(\"Verify Login Data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.user.userName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.user.userName).to.eql(\"sopigp\");\r",
+									"    pm.expect(jsonData.user.userRole).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.user.userRole).to.eql(\"Admin\");\r",
+									"    pm.expect(jsonData.user.status).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.user.status).to.eql(\"Enabled\");\r",
+									"    pm.expect(jsonData.user.employeeName).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.user.employeeName).to.eql(\"Sofie Gita Pratiwi\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Id Login\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.user.employeeId).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.user.employeeId).to.have.lengthOf(1);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "sopigp",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Bintangyy_031920",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.Get Organization Information",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Organization Information Result\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.id).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data.id).to.eql(\"1\");\r",
+									"    pm.expect(jsonData.data.name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data.name).to.eql(\"Cilsy Fiolution\");\r",
+									"    pm.expect(jsonData.data.taxId).to.eql(null);\r",
+									"    pm.expect(jsonData.data.registraionNumber).to.eql(null);\r",
+									"    pm.expect(jsonData.data.phone).to.eql(null);\r",
+									"    pm.expect(jsonData.data.fax).to.eql(null);\r",
+									"    pm.expect(jsonData.data.email).to.eql(null);\r",
+									"    pm.expect(jsonData.data.country).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data.country).to.eql(\"ID\");\r",
+									"    pm.expect(jsonData.data.province).to.eql(null);\r",
+									"    pm.expect(jsonData.data.city).to.eql(null);\r",
+									"    pm.expect(jsonData.data.zipCode).to.eql(null);\r",
+									"    pm.expect(jsonData.data.street1).to.eql(null);\r",
+									"    pm.expect(jsonData.data.street2).to.eql(null);\r",
+									"    pm.expect(jsonData.data.note).to.eql(null);\r",
+									"    pm.expect(jsonData.data.numberOfEmployees).to.be.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/organization",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"organization"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Attendance",
+			"item": [
+				{
+					"name": "1.Punch In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Punched In\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Verify Punch In Id\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.be.a(\"string\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "{{id}}",
+									"type": "text"
+								},
+								{
+									"key": "timezone",
+									"value": "Asia/Jakarta",
+									"type": "text"
+								},
+								{
+									"key": "note",
+									"value": "Testing",
+									"type": "text"
+								},
+								{
+									"key": "datetime",
+									"value": "2021-09-22 21:27",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/punch-in",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"punch-in"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{employeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.Punch Out",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Punched Out\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Verify Punch In Id\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.be.a(\"string\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "{{id}}",
+									"type": "text"
+								},
+								{
+									"key": "timezone",
+									"value": "Asia/Jakarta",
+									"type": "text"
+								},
+								{
+									"key": "note",
+									"value": "Testing",
+									"type": "text"
+								},
+								{
+									"key": "datetime",
+									"value": "2021-09-22 21:27",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/punch-out",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"punch-out"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{employeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Add Employee",
+			"item": [
+				{
+					"name": "1A.Save Employee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"newEmployeeId\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Saved\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Save Employee Id\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"newEmployeeId\"));\r",
+									"    pm.expect(jsonData.id).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"firstNameEmployee\", \"Kenzi\");\r",
+									"pm.environment.set(\"middleNameEmployee\", \"Swara\");\r",
+									"pm.environment.set(\"lastNameEmployee\", \"Dirgantara\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "firstName",
+									"value": "{{firstNameEmployee}}",
+									"type": "text"
+								},
+								{
+									"key": "middleName",
+									"value": "{{middleNameEmployee}}",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "{{lastNameEmployee}}",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "{{code}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{employeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2A.Employee Detail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"employeeName\", jsonData.data.fullName);\r",
+									"\r",
+									"pm.test(\"The response has all properties\", () => {\r",
+									"    //parse the response json and test three properties\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.data.firstName).to.eql(pm.environment.get(\"firstNameEmployee\"));\r",
+									"    pm.expect(responseJson.data.firstName).to.be.a('string');\r",
+									"   \r",
+									"    pm.expect(responseJson.data.middleName).to.eql(pm.environment.get(\"middleNameEmployee\"));\r",
+									"    pm.expect(responseJson.data.middleName).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.lastName).to.eql(pm.environment.get(\"lastNameEmployee\"));\r",
+									"    pm.expect(responseJson.data.lastName).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.code).to.eql(pm.environment.get(\"code\"));\r",
+									"    pm.expect(responseJson.data.code).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.employeeId).to.eql(pm.environment.get(\"newEmployeeId\"));\r",
+									"    pm.expect(responseJson.data.employeeId).to.be.a('string');\r",
+									"\r",
+									"    const firstNameEmployee = pm.environment.get(\"firstNameEmployee\");\r",
+									"    const middleNameEmployee = pm.environment.get(\"middleNameEmployee\");\r",
+									"    const lastNameEmployee = pm.environment.get(\"lastNameEmployee\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.fullName).to.eql(firstNameEmployee.concat(\" \", middleNameEmployee, \" \", lastNameEmployee));\r",
+									"    pm.expect(responseJson.data.fullName).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.dob).to.eql(null);\r",
+									"    pm.expect(responseJson.data.driversLicenseNumber).to.eql('');\r",
+									"    pm.expect(responseJson.data.licenseExpiryDate).to.eql(null);\r",
+									"    pm.expect(responseJson.data.maritalStatus).to.eql(null);\r",
+									"    pm.expect(responseJson.data.gender).to.eql(null);\r",
+									"    pm.expect(responseJson.data.otherId).to.eql('');\r",
+									"    pm.expect(responseJson.data.nationality).to.eql(null);\r",
+									"    pm.expect(responseJson.data.unit).to.eql(null);\r",
+									"    pm.expect(responseJson.data.jobTitle).to.eql(null);\r",
+									"    pm.expect(responseJson.data.supervisor).to.eql(null);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3A.Save Employee Contact Detail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Saved\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"addressStreet1\", \"Puri Nirwana 1\");\r",
+									"pm.environment.set(\"addressStreet2\", \"Cibinong\");\r",
+									"pm.environment.set(\"city\", \"Kab.Bogor\");\r",
+									"pm.environment.set(\"state\", \"Indonesia\");\r",
+									"pm.environment.set(\"zip\", \"16916\");\r",
+									"pm.environment.set(\"country\", \"INDONESIA\");\r",
+									"pm.environment.set(\"homeTelephone\", \"02187904693\");\r",
+									"pm.environment.set(\"mobile\", \"081316009990\");\r",
+									"pm.environment.set(\"workTelephone\", \"081285862899\");\r",
+									"pm.environment.set(\"workEmail\", \"kenziswarass@gmail.com\");\r",
+									"pm.environment.set(\"otherEmail\", \"dirgantara.kenzssi@gmail.com\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}",
+									"type": "text"
+								},
+								{
+									"key": "addressStreet1",
+									"value": "{{addressStreet1}}",
+									"type": "text"
+								},
+								{
+									"key": "addressStreet2",
+									"value": "{{addressStreet2}}",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "{{city}}",
+									"type": "text"
+								},
+								{
+									"key": "state",
+									"value": "{{state}}",
+									"type": "text"
+								},
+								{
+									"key": "zip",
+									"value": "{{zip}}",
+									"type": "text"
+								},
+								{
+									"key": "country",
+									"value": "{{country}}",
+									"type": "text"
+								},
+								{
+									"key": "homeTelephone",
+									"value": "{{homeTelephone}}",
+									"type": "text"
+								},
+								{
+									"key": "mobile",
+									"value": "{{mobile}}",
+									"type": "text"
+								},
+								{
+									"key": "workTelephone",
+									"value": "{{workTelephone}}",
+									"type": "text"
+								},
+								{
+									"key": "workEmail",
+									"value": "{{workEmail}}",
+									"type": "text"
+								},
+								{
+									"key": "otherEmail",
+									"value": "{{otherEmail}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/contact-detail",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"contact-detail"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4A.Employee Contact Detail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has all properties\", () => {\r",
+									"    //parse the response json and test three properties\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.data.id).to.eql(pm.environment.get(\"newEmployeeId\"));\r",
+									"    pm.expect(responseJson.data.id).to.be.a('string');\r",
+									"   \r",
+									"    pm.expect(responseJson.data.code).to.eql(pm.environment.get(\"code\"));\r",
+									"    pm.expect(responseJson.data.code).to.be.a('string');\r",
+									"\r",
+									"    const firstNameEmployee = pm.environment.get(\"firstNameEmployee\");\r",
+									"    const middleNameEmployee = pm.environment.get(\"middleNameEmployee\");\r",
+									"    const lastNameEmployee = pm.environment.get(\"lastNameEmployee\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.fullName).to.eql(firstNameEmployee.concat(\" \", middleNameEmployee, \" \", lastNameEmployee));\r",
+									"\r",
+									"    pm.expect(responseJson.data.addressStreet1).to.eql(pm.environment.get(\"addressStreet1\"));\r",
+									"    pm.expect(responseJson.data.addressStreet1).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.addressStreet2).to.eql(pm.environment.get(\"addressStreet2\"));\r",
+									"    pm.expect(responseJson.data.addressStreet2).to.be.a(\"string\");\r",
+									"   \r",
+									"    pm.expect(responseJson.data.city).to.eql(pm.environment.get(\"city\"));\r",
+									"    pm.expect(responseJson.data.city).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.state).to.eql(pm.environment.get(\"state\"));\r",
+									"    pm.expect(responseJson.data.state).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.zip).to.eql(pm.environment.get(\"zip\"));\r",
+									"    pm.expect(responseJson.data.zip).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.county).to.eql(pm.environment.get(\"country\"));\r",
+									"    pm.expect(responseJson.data.county).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.homeTelephone).to.eql(pm.environment.get(\"homeTelephone\"));\r",
+									"    pm.expect(responseJson.data.homeTelephone).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.workTelephone).to.eql(pm.environment.get(\"workTelephone\"));\r",
+									"    pm.expect(responseJson.data.workTelephone).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.mobile).to.eql(pm.environment.get(\"mobile\"));\r",
+									"    pm.expect(responseJson.data.mobile).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.workEmail).to.eql(pm.environment.get(\"workEmail\"));\r",
+									"    pm.expect(responseJson.data.workEmail).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.otherEmail).to.eql(pm.environment.get(\"otherEmail\"));\r",
+									"    pm.expect(responseJson.data.otherEmail).to.be.a(\"string\");\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/contact-detail",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"contact-detail"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5A.Update Employee Detail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Updated\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"firstNameEmployee\", \"Septian\");\r",
+									"pm.environment.set(\"middleNameEmployee\", \"Perdana\");\r",
+									"pm.environment.set(\"lastNameEmployee\", \"Putra\");\r",
+									"pm.environment.set(\"fullNameUpdateEmployee\", \"Septian Perdana Putra\");\r",
+									"pm.environment.set(\"dobEmployee\", \"1993-04-16\");\r",
+									"pm.environment.set(\"driversLicenseNumberEmployee\", \"34132413413\");\r",
+									"pm.environment.set(\"licenseNumberExpDateEmployee\", \"2022-07-13\");\r",
+									"pm.environment.set(\"maritalStatusEmployee\", \"Single\");\r",
+									"pm.environment.set(\"otherIdEmployee\", \"0018\");\r",
+									"pm.environment.set(\"nationalityEmployee\", \"Indonesian\");\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\":\"{{newEmployeeId}}\",\r\n        \"firstName\": \"{{firstNameEmployee}}\",\r\n        \"middleName\": \"{{middleNameEmployee}}\",\r\n        \"lastName\": \"{{lastNameEmployee}}\",\r\n        \"code\": \"{{code}}\",\r\n        \"fullName\": \"{{fullNameUpdateEmpoyee}}\",\r\n        \"dob\": \"{{dobEmployee}}\",\r\n        \"licenseNumber\": \"{{driversLicenseNumberEmployee}}\",\r\n        \"licenseNumberExpDate\": \"{{licenseNumberExpDateEmployee}}\",\r\n        \"maritalStatus\": \"{{maritalStatusEmployee}}\",\r\n        \"gender\": \"M\",\r\n        \"otherId\": \"{{otherIdEmployee}}\",\r\n        \"nationality\": \"{{nationalityEmployee}}\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6A.Get Update Employee Detail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"employeeName\", jsonData.data.fullName);\r",
+									"\r",
+									"pm.test(\"The response has all properties\", () => {\r",
+									"    //parse the response json and test three properties\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.data.firstName).to.eql(pm.environment.get(\"firstNameEmployee\"));\r",
+									"    pm.expect(responseJson.data.firstName).to.be.a('string');\r",
+									"   \r",
+									"    pm.expect(responseJson.data.middleName).to.eql(pm.environment.get(\"middleNameEmployee\"));\r",
+									"    pm.expect(responseJson.data.middleName).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.lastName).to.eql(pm.environment.get(\"lastNameEmployee\"));\r",
+									"    pm.expect(responseJson.data.lastName).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.code).to.eql(pm.environment.get(\"code\"));\r",
+									"    pm.expect(responseJson.data.code).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.employeeId).to.eql(pm.environment.get(\"newEmployeeId\"));\r",
+									"    pm.expect(responseJson.data.employeeId).to.be.a('string');\r",
+									"\r",
+									"    const firstNameEmployee = pm.environment.get(\"firstNameEmployee\");\r",
+									"    const middleNameEmployee = pm.environment.get(\"middleNameEmployee\");\r",
+									"    const lastNameEmployee = pm.environment.get(\"lastNameEmployee\");\r",
+									"\r",
+									"    pm.expect(jsonData.data.fullName).to.eql(firstNameEmployee.concat(\" \", middleNameEmployee, \" \", lastNameEmployee));\r",
+									"\r",
+									"    pm.expect(responseJson.data.status).to.eql(null);\r",
+									"    pm.expect(responseJson.data.dob).to.eql(pm.environment.get(\"dobEmployee\"));\r",
+									"    pm.expect(responseJson.data.dob).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.driversLicenseNumber).to.eql(pm.environment.get(\"driversLicenseNumberEmployee\"));\r",
+									"    pm.expect(responseJson.data.driversLicenseNumber).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.licenseExpiryDate).to.eql(pm.environment.get(\"licenseNumberExpDateEmployee\"));\r",
+									"    pm.expect(responseJson.data.licenseExpiryDate).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.maritalStatus).to.eql(pm.environment.get(\"maritalStatusEmployee\"));\r",
+									"    pm.expect(responseJson.data.maritalStatus).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.gender).to.eql(\"Male\");\r",
+									"    pm.expect(responseJson.data.gender).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.otherId).to.eql(pm.environment.get(\"otherIdEmployee\"));\r",
+									"    pm.expect(responseJson.data.otherId).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.nationality).to.eql(pm.environment.get(\"nationalityEmployee\"));\r",
+									"    pm.expect(responseJson.data.nationality).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(responseJson.data.unit).to.eql(null);\r",
+									"    pm.expect(responseJson.data.jobTitle).to.eql(null);\r",
+									"    pm.expect(responseJson.data.supervisor).to.eql(null);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7A.Employee Search (Take Out)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/employee/search?name={{firstName}}&code={{code}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{firstName}}"
+								},
+								{
+									"key": "code",
+									"value": "{{code}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8A.Update Employee Contact Detail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Updated\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"addressStreetUpdate1\", \"Jl.Delima\");\r",
+									"pm.environment.set(\"addressStreetUpdate2\", \"Bojong Gede\");\r",
+									"pm.environment.set(\"cityUpdate\", \"Bogor\");\r",
+									"pm.environment.set(\"stateUpdate\", \"Indonesia\");\r",
+									"pm.environment.set(\"zipUpdate\", \"12345\");\r",
+									"pm.environment.set(\"countryUpdate\", \"INDONESIA\");\r",
+									"pm.environment.set(\"homeTelephoneUpdate\", \"02187904488\");\r",
+									"pm.environment.set(\"workTelephoneUpdate\", \"081318009999\");\r",
+									"pm.environment.set(\"mobileUpdate\", \"08128586289\");\r",
+									"pm.environment.set(\"workEmailUpdate\", \"septiansembilanlima@gmail.com\");\r",
+									"pm.environment.set(\"otherEmailUpdate\", \"septianp@gmail.com\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": \"{{newEmployeeId}}\",\r\n        \"addressStreet1\": \"{{addressStreetUpdate1}}\",\r\n        \"addressStreet2\": \"{{addressStreetUpdate2}}\",\r\n        \"city\": \"{{cityUpdate}}\",\r\n        \"state\": \"{{stateUpdate}}\",\r\n        \"zip\": \"{{zipUpdate}}\",\r\n        \"country\": \"{{countryUpdate}}\",\r\n        \"homeTelephone\": \"{{homeTelephoneUpdate}}\",\r\n        \"workTelephone\": \"{{workTelephoneUpdate}}\",\r\n        \"mobile\": \"{{mobileUpdate}}\",\r\n        \"workEmail\": \"{{workEmailUpdate}}\",\r\n        \"otherEmail\": \"{{otherEmailUpdate}}\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/contact-detail",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"contact-detail"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9A.Get Update Employee Contact Detail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has all properties\", () => {\r",
+									"    //parse the response json and test three properties\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.data.id).to.eql(pm.environment.get(\"newEmployeeId\"));\r",
+									"    pm.expect(responseJson.data.id).to.be.a('string');\r",
+									"   \r",
+									"    pm.expect(responseJson.data.code).to.eql(pm.environment.get(\"code\"));\r",
+									"    pm.expect(responseJson.data.code).to.be.a('string');\r",
+									"\r",
+									"    const firstNameEmployee = pm.environment.get(\"firstNameEmployee\");\r",
+									"    const middleNameEmployee = pm.environment.get(\"middleNameEmployee\");\r",
+									"    const lastNameEmployee = pm.environment.get(\"lastNameEmployee\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.fullName).to.eql(firstNameEmployee.concat(\" \", middleNameEmployee, \" \", lastNameEmployee));\r",
+									"\r",
+									"    pm.expect(responseJson.data.addressStreet1).to.eql(pm.environment.get(\"addressStreetUpdate1\"));\r",
+									"    pm.expect(responseJson.data.addressStreet1).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.addressStreet2).to.eql(pm.environment.get(\"addressStreetUpdate2\"));\r",
+									"    pm.expect(responseJson.data.addressStreet2).to.be.a(\"string\");\r",
+									"   \r",
+									"    pm.expect(responseJson.data.city).to.eql(pm.environment.get(\"cityUpdate\"));\r",
+									"    pm.expect(responseJson.data.city).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.state).to.eql(pm.environment.get(\"stateUpdate\"));\r",
+									"    pm.expect(responseJson.data.state).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.zip).to.eql(pm.environment.get(\"zipUpdate\"));\r",
+									"    pm.expect(responseJson.data.zip).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.county).to.eql(pm.environment.get(\"countryUpdate\"));\r",
+									"    pm.expect(responseJson.data.county).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.homeTelephone).to.eql(pm.environment.get(\"homeTelephoneUpdate\"));\r",
+									"    pm.expect(responseJson.data.homeTelephone).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.workTelephone).to.eql(pm.environment.get(\"workTelephoneUpdate\"));\r",
+									"    pm.expect(responseJson.data.workTelephone).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.mobile).to.eql(pm.environment.get(\"mobileUpdate\"));\r",
+									"    pm.expect(responseJson.data.mobile).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.workEmail).to.eql(pm.environment.get(\"workEmailUpdate\"));\r",
+									"    pm.expect(responseJson.data.workEmail).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(responseJson.data.otherEmail).to.eql(pm.environment.get(\"otherEmailUpdate\"));\r",
+									"    pm.expect(responseJson.data.otherEmail).to.be.a(\"string\");\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/contact-detail",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"contact-detail"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee Custom Field",
+			"item": [
+				{
+					"name": "1G.Save Employee Custom Field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Saved\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"valueCustomField\", \"Badminton\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}",
+									"type": "text"
+								},
+								{
+									"key": "fieldId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "value",
+									"value": "{{valueCustomField}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/custom-field",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"custom-field"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3G.Employee Custom Field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has all properties\", () => {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data[0].id).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].id).to.eql(\"1\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].name).to.eql(\"Hobby\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].type).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].type).to.eql(\"Text or Number\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].screen).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].screen).to.eql(\"personal\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].value).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].value).to.eql(pm.environment.get(\"valueCustomField\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/custom-field",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"custom-field"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2G.Update Employee Custom Field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Saved\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"valueCustomFieldUpdate\", \"Swimming\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{newEmployeeId}},\r\n    \"fieldId\": \"1\",\r\n    \"value\": \"{{valueCustomFieldUpdate}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/custom-field",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"custom-field"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5G.Get Employee Custom Field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has all properties\", () => {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data[0].id).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].id).to.eql(\"1\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].name).to.eql(\"Hobby\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].type).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].type).to.eql(\"Text or Number\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].screen).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].screen).to.eql(\"personal\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].value).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].value).to.eql(pm.environment.get(\"valueCustomFieldUpdate\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/custom-field",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"custom-field"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6G.Custom Field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has all properties\", () => {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data[0].id).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].id).to.eql(\"1\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].name).to.eql(\"Hobby\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].type).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].type).to.eql(\"Text or Number\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].screen).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].screen).to.eql(\"personal\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].extraData).to.eql('');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/custom-field",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"custom-field"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7G.Delete Employee Custom Field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Deleted\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{newEmployeeId}},\r\n    \"fieldId\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/custom-field",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"custom-field"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee Education",
+			"item": [
+				{
+					"name": "1F.Save Employee Education",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Saved\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"seqIdEducation\", jsonData.seqId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}",
+									"type": "text"
+								},
+								{
+									"key": "level",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "seqId",
+									"value": "{{seqIdEducation}}",
+									"type": "text"
+								},
+								{
+									"key": "institute",
+									"value": "Gunadarma University",
+									"type": "text"
+								},
+								{
+									"key": "startDate",
+									"value": "2016-03-16",
+									"type": "text"
+								},
+								{
+									"key": "endDate",
+									"value": "2020-09-01",
+									"type": "text"
+								},
+								{
+									"key": "specialization",
+									"value": "FIKTI - Information System",
+									"type": "text"
+								},
+								{
+									"key": "year",
+									"value": "2020",
+									"type": "text"
+								},
+								{
+									"key": "gpa",
+									"value": "3.71/4.00",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/education",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"education"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2F.Employee Education",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data[0].seqId).to.eql(pm.environment.get(\"seqIdEducation\"));\r",
+									"    pm.expect(jsonData.data[0].seqId).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].level).to.eql(\"1\");\r",
+									"    pm.expect(jsonData.data[0].level).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].institute).to.eql(\"Gunadarma University\");\r",
+									"    pm.expect(jsonData.data[0].institute).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].specialization).to.eql(\"FIKTI - Information System\");\r",
+									"    pm.expect(jsonData.data[0].specialization).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].year).to.eql(\"2020\");\r",
+									"    pm.expect(jsonData.data[0].year).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].fromDate).to.eql(\"2016-03-16\");\r",
+									"    pm.expect(jsonData.data[0].fromDate).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].toDate).to.eql(\"2020-09-01\");\r",
+									"    pm.expect(jsonData.data[0].toDate).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].gpa).to.eql(\"3.71/4.00\");\r",
+									"    pm.expect(jsonData.data[0].gpa).to.be.a(\"string\");\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/education",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"education"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3F.Update Employee Education",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Updated\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"\r",
+									"    pm.expect(jsonData.seqId).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.seqId).to.eql(pm.environment.get(\"seqIdEducation\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n    \"id\":{{newEmployeeId}},\r\n    \"seqId\": \"{{seqIdEducation}}\",\r\n    \"level\": \"1\",\r\n    \"institute\": \"okk\",\r\n    \"startDate\": \"2016-03-16\",\r\n    \"endDateDate\":\"2016-03-16\",\r\n    \"specialization\": \"FIKTI BARUUUU\",\r\n    \"year\": \"2021\",\r\n    \"gpa\": \"3.86/4.00\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/education",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"education"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4F.Delete Employee Education",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Deleted\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{newEmployeeId}},\r\n    \"seqId\": {{seqIdEducation}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/education",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"education"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee Experience",
+			"item": [
+				{
+					"name": "1E.Save Employee Work Experience",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Saved\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"seqIdExperience\", jsonData.seqId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}",
+									"type": "text"
+								},
+								{
+									"key": "company",
+									"value": "PT Cilsy Fiolution",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "QA Engineer",
+									"type": "text"
+								},
+								{
+									"key": "fromDate",
+									"value": "2018-10-10",
+									"type": "text"
+								},
+								{
+									"key": "toDate",
+									"value": "2020-10-10",
+									"type": "text"
+								},
+								{
+									"key": "comment",
+									"value": "Yok semangat yok!",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/work-experience",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"work-experience"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2E.Employee Work Experience",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data[0].id).to.eql(\"1\");\r",
+									"    pm.expect(jsonData.data[0].id).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].company).to.eql(\"PT Cilsy Fiolution\");\r",
+									"    pm.expect(jsonData.data[0].company).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].jobTitle).to.eql(\"QA Engineer\");\r",
+									"    pm.expect(jsonData.data[0].jobTitle).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].fromDate).to.eql(\"2018-10-10\");\r",
+									"    pm.expect(jsonData.data[0].fromDate).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].toDate).to.eql(\"2020-10-10\");\r",
+									"    pm.expect(jsonData.data[0].toDate).to.be.a(\"string\");\r",
+									"\r",
+									"    pm.expect(jsonData.data[0].comment).to.eql(\"Yok semangat yok!\");\r",
+									"    pm.expect(jsonData.data[0].comment).to.be.a(\"string\");\r",
+									"\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/work-experience",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"work-experience"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3E.Update Employee Work Experience",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Updated\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"id\": {{newEmployeeId}},\r\n    \"seqId\": {{seqIdExperience}},\r\n    \"company\": \"PT SUKA DUKA BERSAMA\",\r\n    \"title\": \"testing\",\r\n    \"fromDate\": \"2018-10-10\",\r\n    \"toDate\": \"2020-10-10\",\r\n    \"comment\": \"Yok semangat yok!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/work-experience",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"work-experience"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4E.Delete Employee Work Experience",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Deleted\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{newEmployeeId}},\r\n    \"seqId\": {{seqIdExperience}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/work-experience",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"work-experience"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Supervisor",
+			"item": [
+				{
+					"name": "1D.Save Supervisor Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Saved\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}",
+									"type": "text"
+								},
+								{
+									"key": "supervisorId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "reportingMethod",
+									"value": "testing supervisor",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/supervisor",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"supervisor"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2D.Supervisor Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"reportingMethodSupervisor\", jsonData.reportingMethod);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/supervisor",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"supervisor"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3D.Update Supervisor Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Updated\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{newEmployeeId}},\r\n    \"supervisorId\": \"1\",\r\n    \"reportingMethod\": \"testing supervisor baru\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/supervisor",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"supervisor"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4D.Delete Supervisor Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Deleted\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{newEmployeeId}},\r\n    \"supervisorId\": \"1\",\r\n    \"reportingMethod\": \"testing supervisor baru\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/supervisor",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"supervisor"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee Dependents",
+			"item": [
+				{
+					"name": "1B.Save Employee Dependent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Saved\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"sequenceNumber\", jsonData.sequenceNumber);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Fariz Insan Naraya",
+									"type": "text"
+								},
+								{
+									"key": "relationship",
+									"value": "Child",
+									"type": "text"
+								},
+								{
+									"key": "dob",
+									"value": "2010-10-20",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/dependent",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"dependent"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2B.Employee Dependents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/dependent",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"dependent"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3B.Update Employee Dependents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Updated\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"id\": {{newEmployeeId}},\r\n    \"name\": \"tes\",\r\n    \"relationship\": \"Child\",\r\n    \"dob\": \"2010-10-20\",\r\n    \"sequenceNumber\": {{sequenceNumber}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/dependent",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"dependent"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4B.Delete Employee Dependents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(\"Successfully Deleted\");\r",
+									"    pm.expect(jsonData.success).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"sequenceNumber\": {{sequenceNumber}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/employee/:id/dependent",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"employee",
+								":id",
+								"dependent"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{newEmployeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
