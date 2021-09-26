@@ -1,0 +1,82 @@
+NEW :
+1. Open Rest API Postman
+2. Enter the URL of API to test
+3. Select the correct HTTP method for xxxxx
+4. Provide correct header set
+5. Provide correct required Body content
+6. Submit the details to start the test
+7. Validating the results
+
+CHANGE :
+1. Open Postman Rest API
+2. Enter the URL of the API to be tested
+3. Select the correct HTTP method for Initialization Request
+4. change the correct header set
+5. Correctly modify the required Body content
+6. Submit the details to start the test
+7. Validate the results
+
+
+NEW NEGATIVE - INVALID HTTP METHOD:
+1. Open Rest API Postman
+2. Enter the URL of API to test
+3. Select the incorrect HTTP method for xxxxx
+4. Provide correct header set
+5. Provide correct required Body content
+6. Submit the details to start the test
+7. Validating the results
+
+NEW NEGATIVE - INVALID HEADER SET:
+1. Open Rest API Postman
+2. Enter the URL of API to test
+3. Select the correct HTTP method for xxxxx
+4. Provide header set with expired token
+5. Provide correct required Body content
+6. Submit the details to start the test
+7. Validating the results
+
+NEW NEGATIVE - INVALID HEADER SET:
+1. Open Rest API Postman
+2. Enter the URL of API to test
+3. Select the correct HTTP method for xxxxx
+4. Provide incorrect header set
+5. Provide correct required Body content
+6. Submit the details to start the test
+7. Validating the results
+
+NEW NEGATIVE - INVALID BODY CONTENT:
+1. Open Rest API Postman
+2. Enter the URL of API to test
+3. Select the correct HTTP method for xxxxx
+4. Provide correct header set
+5. Provide incorrect required Body content
+6. Submit the details to start the test
+7. Validating the results
+
+
+NEGATIVE - EMPTY URL:
+1. Open Postman Rest API
+2. Clear the URL of the API to be tested
+3. Select the correct HTTP method for xxxxx
+4. Provide the header set
+5. Provide the required Body content properly
+6. Submit the details to start the test
+7. Validate the results
+
+NEGATIVE - EMPTY HEADER :
+1. Open Postman Rest API
+2. Enter the URL of the API to be tested
+3. Select the correct HTTP method for xxxxx
+4. Clear the header set
+5. Provide the required Body content properly
+6. Submit the details to start the test
+7. Validate the results
+
+NEGATIVE - EMPTY BODY CONTENT :
+1. Open Postman Rest API
+2. Enter the URL of the API to be tested
+3. Select the correct HTTP method for xxxxx
+4. Provide correct header set
+5. clear Body content
+6. Submit the details to start the test
+7. Validate the results
